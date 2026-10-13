@@ -101,7 +101,6 @@
       width: 280px;
     }
 
-    /* Bone Cards With Graphics */
     .bone-card {
       background: #334155;
       border: 3px solid #64748b;
@@ -136,12 +135,11 @@
       pointer-events: none;
     }
 
-    /* Kunci grafik SVG supaya klik/tap diproses pada butang utama */
     .bone-card svg, .drop-zone svg {
       pointer-events: none;
     }
 
-    /* Skeleton Stand Frame */
+    /* Skeleton Frame */
     .skeleton-frame {
       background: #0f172a;
       border: 3px solid #a855f7;
@@ -278,7 +276,7 @@
 
 <div class="game-card">
   
-  <!-- Teacher Banner with Hijab Avatar SVG -->
+  <!-- Teacher Banner Header -->
   <div class="teacher-header">
     <svg class="teacher-avatar" viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="46" fill="#a855f7"/>
@@ -319,184 +317,4 @@
           <svg width="45" height="45" viewBox="0 0 100 100">
             <line x1="50" y1="10" x2="50" y2="90" stroke="#f8fafc" stroke-width="8"/>
             <path d="M 25 25 Q 50 15 75 25 M 20 40 Q 50 30 80 40 M 20 55 Q 50 45 80 55 M 25 70 Q 50 60 75 70" stroke="#f8fafc" stroke-width="5" fill="none" stroke-linecap="round"/>
-          </svg>
-          <span>Chest</span>
-        </div>
-
-        <!-- Arms Card -->
-        <div class="bone-card" id="b-arms" onclick="pickBone('arms')">
-          <svg width="55" height="35" viewBox="0 0 120 80">
-            <path d="M 20 20 L 50 35 L 20 65 M 100 20 L 70 35 L 100 65" stroke="#f8fafc" stroke-width="8" stroke-linecap="round" fill="none"/>
-            <circle cx="50" cy="35" r="5" fill="#cbd5e1"/>
-            <circle cx="70" cy="35" r="5" fill="#cbd5e1"/>
-          </svg>
-          <span>Arms</span>
-        </div>
-
-        <!-- Legs Card -->
-        <div class="bone-card" id="b-legs" onclick="pickBone('legs')">
-          <svg width="45" height="45" viewBox="0 0 100 100">
-            <path d="M 40 10 L 35 90 M 60 10 L 65 90 M 35 90 L 25 95 M 65 90 L 75 95" stroke="#f8fafc" stroke-width="8" stroke-linecap="round"/>
-            <circle cx="35" cy="50" r="6" fill="#cbd5e1"/>
-            <circle cx="65" cy="50" r="6" fill="#cbd5e1"/>
-          </svg>
-          <span>Legs</span>
-        </div>
-      </div>
-
-      <!-- Skeleton Frame Drop Spots -->
-      <div class="skeleton-frame">
-        <div class="drop-zone zone-head" id="s-head" onclick="placeBone('head')">Spot 1: Head</div>
-        <div class="drop-zone zone-chest" id="s-chest" onclick="placeBone('chest')">Spot 2: Chest</div>
-        <div class="drop-zone zone-arms" id="s-arms" onclick="placeBone('arms')">Spot 3: Arms</div>
-        <div class="drop-zone zone-legs" id="s-legs" onclick="placeBone('legs')">Spot 4: Legs</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PHASE 2: QUIZ -->
-  <div id="phase2" class="hidden">
-    <h1 class="game-title">⭐ Teacher Wafi's Quiz ⭐</h1>
-    <div class="quiz-card">
-      <div class="quiz-bar">
-        <span>Year 2 Quiz</span>
-        <span id="scoreText">Score: 0</span>
-      </div>
-      <div class="question-box" id="questionText">Loading...</div>
-      <div class="options-grid" id="optionsContainer"></div>
-    </div>
-  </div>
-
-  <!-- PHASE 3: RESULTS -->
-  <div id="phase3" class="hidden result-screen">
-    <h1 class="game-title">🎉 Well Done!</h1>
-    <p class="subtitle">Teacher Wafi is super proud of you!</p>
-    <div class="score-badge" id="finalScore">0 / 50</div>
-    <div class="award-title" id="badgeText">Super Star Pupil!</div>
-    <br>
-    <button class="restart-btn" onclick="location.reload()">🔄 Play Again</button>
-  </div>
-
-</div>
-
-<script>
-  var selectedType = null;
-  var filledCount = 0;
-  var score = 0;
-  var qIndex = 0;
-
-  var questions = [
-    { question: "1. What are the bones inside our body called? 💀", options: ["A) Skeleton", "B) Hair"], correct: 0 },
-    { question: "2. Which bone is at the top of our body? 💀", options: ["A) Foot", "B) Head"], correct: 1 },
-    { question: "3. What do our bones help us do? 🏃‍♂️", options: ["A) Move and stand", "B) Sleep"], correct: 0 },
-    { question: "4. Do humans have bones inside their bodies? 🧍‍♂️", options: ["A) Yes", "B) No"], correct: 0 },
-    { question: "5. Do animals like dogs and cats have skeletons? 🐶", options: ["A) Yes", "B) No"], correct: 0 }
-  ];
-
-  var boneSVGs = {
-    head: '<svg width="50" height="50" viewBox="0 0 100 100"><path d="M 20 50 A 30 30 0 1 1 80 50 A 20 20 0 0 1 70 80 L 30 80 A 20 20 0 0 1 20 50 Z" fill="#f8fafc"/><circle cx="38" cy="48" r="7" fill="#0f172a"/><circle cx="62" cy="48" r="7" fill="#0f172a"/><path d="M 42 62 L 50 56 L 58 62" stroke="#0f172a" stroke-width="3" stroke-linecap="round" fill="none"/><line x1="38" y1="72" x2="62" y2="72" stroke="#0f172a" stroke-width="3"/></svg>',
-    chest: '<svg width="50" height="50" viewBox="0 0 100 100"><line x1="50" y1="10" x2="50" y2="90" stroke="#f8fafc" stroke-width="8"/><path d="M 25 25 Q 50 15 75 25 M 20 40 Q 50 30 80 40 M 20 55 Q 50 45 80 55 M 25 70 Q 50 60 75 70" stroke="#f8fafc" stroke-width="5" fill="none" stroke-linecap="round"/></svg>',
-    arms: '<svg width="60" height="40" viewBox="0 0 120 80"><path d="M 20 20 L 50 35 L 20 65 M 100 20 L 70 35 L 100 65" stroke="#f8fafc" stroke-width="8" stroke-linecap="round" fill="none"/><circle cx="50" cy="35" r="5" fill="#cbd5e1"/><circle cx="70" cy="35" r="5" fill="#cbd5e1"/></svg>',
-    legs: '<svg width="50" height="60" viewBox="0 0 100 100"><path d="M 40 10 L 35 90 M 60 10 L 65 90 M 35 90 L 25 95 M 65 90 L 75 95" stroke="#f8fafc" stroke-width="8" stroke-linecap="round"/><circle cx="35" cy="50" r="6" fill="#cbd5e1"/><circle cx="65" cy="50" r="6" fill="#cbd5e1"/></svg>'
-  };
-
-  function pickBone(type) {
-    var card = document.getElementById('b-' + type);
-    if (card.classList.contains('used')) return;
-
-    var cards = document.querySelectorAll('.bone-card');
-    for (var i = 0; i < cards.length; i++) {
-      cards[i].classList.remove('selected');
-    }
-
-    card.classList.add('selected');
-    selectedType = type;
-
-    var spots = document.querySelectorAll('.drop-zone');
-    for (var j = 0; j < spots.length; j++) {
-      if (spots[j].id === 's-' + type && !spots[j].classList.contains('filled')) {
-        spots[j].classList.add('active-target');
-      } else {
-        spots[j].classList.remove('active-target');
-      }
-    }
-  }
-
-  function placeBone(targetType) {
-    if (!selectedType) {
-      alert("👉 Please tap a bone picture on the left first!");
-      return;
-    }
-
-    if (selectedType === targetType) {
-      var zone = document.getElementById('s-' + targetType);
-      var card = document.getElementById('b-' + targetType);
-
-      zone.innerHTML = boneSVGs[targetType];
-      zone.classList.add('filled');
-      zone.classList.remove('active-target');
-
-      card.classList.remove('selected');
-      card.classList.add('used');
-
-      selectedType = null;
-      filledCount++;
-
-      if (filledCount === 4) {
-        setTimeout(function() {
-          alert("🌟 Great Job! Skeleton completed! Now answer Teacher Wafi's Quiz!");
-          startQuiz();
-        }, 300);
-      }
-    } else {
-      alert("❌ Wrong spot! Try matching " + selectedType.toUpperCase() + " to its correct spot!");
-    }
-  }
-
-  function startQuiz() {
-    document.getElementById('phase1').classList.add('hidden');
-    document.getElementById('phase2').classList.remove('hidden');
-    loadQuestion();
-  }
-
-  function loadQuestion() {
-    var q = questions[qIndex];
-    document.getElementById('questionText').textContent = q.question;
-    var container = document.getElementById('optionsContainer');
-    container.innerHTML = '';
-
-    for (var i = 0; i < q.options.length; i++) {
-      (function(idx) {
-        var btn = document.createElement('button');
-        btn.className = 'opt-btn';
-        btn.textContent = q.options[idx];
-        btn.onclick = function() {
-          if (idx === q.correct) {
-            score += 10;
-            alert("✅ Correct! +10 Points!");
-          } else {
-            alert("❌ Oops! Try again!");
-          }
-          document.getElementById('scoreText').textContent = "Score: " + score;
-          qIndex++;
-          if (qIndex < questions.length) loadQuestion();
-          else showResult();
-        };
-        container.appendChild(btn);
-      })(i);
-    }
-  }
-
-  function showResult() {
-    document.getElementById('phase2').classList.add('hidden');
-    document.getElementById('phase3').classList.remove('hidden');
-    document.getElementById('finalScore').textContent = score + " / 50";
-    var badge = document.getElementById('badgeText');
-    if (score === 50) badge.textContent = "🌟 Teacher Wafi's Super Star!";
-    else if (score >= 30) badge.textContent = "🦴 Skeleton Explorer!";
-    else badge.textContent = "🎈 Good Try!";
-  }
-</script>
-
-</body>
-</html>
+          </
